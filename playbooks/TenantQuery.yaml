@@ -1,0 +1,18 @@
+---
+- hosts: apic
+  connection: local
+  gather_facts: False
+  tasks:
+
+    - aci_tenant:
+        hostname: '{{ ansible_host }}'
+        username: '{{ user }}'
+        password: '{{ password }}'
+        validate_certs: no
+        state: query
+      register: all_tenants
+
+
+
+    - ansible.builtin.debug:
+        var: all_tenants

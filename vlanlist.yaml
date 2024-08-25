@@ -1,0 +1,11 @@
+my_vlans:
+  - MB-VLAN-20
+  - MB-VLAN-21
+  - MB-VLAN-22
+  - MB-VLAN-23
+  - MB-VLAN-24
+  - MB-VLAN-25
+  - MB-VLAN-26
+  - MB-VLAN-27
+  - MB-VLAN-28
+  - MB-VLAN-29

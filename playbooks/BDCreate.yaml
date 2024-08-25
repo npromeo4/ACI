@@ -1,0 +1,32 @@
+---
+- name: Create Bridge Domains in Cisco ACI
+  hosts: apic
+  connection: local
+  gather_facts: no
+  vars_files:
+    - /home/nicholasromeo/ansible/bridge_domains.yml  # File containing the list of bridge domains
+
+  tasks:
+    - name: Create Bridge Domains
+      cisco.aci.aci_bd:
+        validate_certs: no
+        host: "{{ ansible_host }}"
+        username: "{{ user }}"
+        password: "{{ password }}"
+        tenant: "{{ tenant_name }}"
+        bd: "{{ item.name }}"
+        state: present
+      loop: "{{ bridge_domains }}"
+      loop_control:
+        loop_var: item
+
+          #    - name: Commit changes if necessary
+          #      cisco.aci.aci_rest:
+          #        host: "{{ ansible_host }}"
+          #        username: "{{ ansible_user }}"
+          #        password: "{{ ansible_ssh_pass }}"
+          #        method: post
+          #        path: /api/mo/uni/tn-{{ tenant_name }}.json
+          #        body: '{"fvTenant":{"attributes":{"dn":"uni/tn-{{ tenant_name }}","status":"modified"}}}'
+          #      when: bridge_domains|length > 0
+

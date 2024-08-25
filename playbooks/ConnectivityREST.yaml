@@ -1,0 +1,26 @@
+---
+- name: Test Connectivity to APIC
+  hosts: apic
+  gather_facts: no
+  connection: httpapi
+
+  tasks:
+    - name: Ping APIC
+      uri:
+        url: "https://{{ inventory_hostname }}/api/aaaLogin.json"
+        method: POST
+        validate_certs: no
+        body_format: json
+        headers:
+          Content-Type: "application/json"
+        body:
+          aaaUser:
+            attributes:
+              name: "{{ user }}"
+              pwd: "{{ password }}"
+      register: login_response
+
+    - name: Display Login Response
+      debug:
+        var: login_response
+

@@ -1,0 +1,21 @@
+---
+- name: Retrieve Tenant Information
+  hosts: apic
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: Get tenant details
+      cisco.aci.aci_rest:
+        host: "{{ ansible_host }}"
+        username: "{{ user }}"
+        password: "{{ password }}"
+        validate_certs: no
+        method: get
+        path: /api/mo/uni/tn-MyTenant.json
+      register: tenant_info
+
+    - name: Display tenant information
+      debug:
+        var: tenant_info.response
+

@@ -1,0 +1,15 @@
+---
+bridge_domains:
+  - name: bd1
+  - name: bd2
+  - name: bd3
+  - name: bd4
+  - name: bd5
+  - name: bd6
+  - name: bd7
+  - name: bd8
+  - name: bd9
+  - name: bd10
+
+tenant_name: MyTenant  # Replace with the appropriate tenant name
+

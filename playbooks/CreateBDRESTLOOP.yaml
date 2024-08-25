@@ -1,0 +1,54 @@
+---
+- name: Test Create Bridge Domain
+  hosts: apic
+  gather_facts: no
+  vars_files: /home/nicholasromeo/ansible/vlanlist.yaml
+  connection: httpapi
+  tasks:
+
+    - name: Login to APIC and get session cookie
+      uri:
+        url: "https://{{ ansible_host }}/api/aaaLogin.json"
+        method: POST
+        validate_certs: no
+        headers:
+          Content-Type: "application/json"
+        body_format: json
+        body:
+          aaaUser:
+            attributes:
+              name: "{{ user }}"
+              pwd: "{{ password }}"
+      register: login_response
+
+    - name: Display Login Response
+      debug:
+        var: login_response
+ 
+
+    - name: Create bridge domain
+      uri:
+        url: "https://{{ ansible_host }}/api/mo/uni/tn-MyTenant/BD-{{ item }}.json"
+        method: POST
+        validate_certs: no
+        headers:
+          Content-Type: "application/json"
+          Cookie: "APIC-Cookie={{ login_response['cookies']['APIC-cookie'] }}"
+        body_format: json
+        body:
+          fvBD:
+            attributes:
+              name: "{{ item }}"
+              status: "created"
+              arpFlood: "no"
+              unkMacUcastAct: "proxy"
+              unkMcastAct: "flood"
+              multiDstPktAct: "bd-flood"
+            children: []
+      register: response
+      loop: "{{ my_vlans }}"
+
+    - name: Display Response
+      debug:
+        var: response
+
